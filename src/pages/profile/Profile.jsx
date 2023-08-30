@@ -8,14 +8,23 @@ import axios from 'axios';
 import { useParams } from 'react-router';
 
 export default function Profile() {
+
   const [user, setUser] = useState({})
+  const [userFound, setUserFound] = useState(false);
   const username = useParams().username;
 
   //fetch user for this profile
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(`http://localhost:5000/api/users?username=${username}`)
-      setUser(res.data);
+      try {
+        const res = await axios.get(`http://localhost:5000/api/users?username=${username}`)
+        setUser(res.data);
+        setUserFound(true);
+      }
+      catch (err) {
+        console.log(err);
+        setUserFound(false);
+      }
     }
     fetchUser();
   }, [username]);
@@ -38,16 +47,26 @@ export default function Profile() {
             </div>
             
             <div className="profileInfo">
-              <h4 className="profileInfoName">{user.username}</h4>
-              <span className="profileInfoDesc">{user.desc}</span>
+              <h4 className="profileInfoName">
+                {userFound ? user.username : "Not Found"}
+              </h4>
+              <span className="profileInfoDesc">
+                {userFound ? user.desc : "404"}
+              </span>
             </div>
           </div>
 
           <div className="profileRightBottom">
-            <Feed username={username} />
-            <Rightbar user={user} />
+            {userFound 
+              ? (<>
+                <Feed username={username} />
+                <Rightbar user={user} />
+                </>)
+              : (<div style={{textAlign: "center", width:"100%", marginTop:"20px"}}>
+                User doesn't exist
+                </div>
+            )}
           </div>
-
         </div>
       </div>
     </>

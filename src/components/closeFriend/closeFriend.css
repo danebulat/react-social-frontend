@@ -1,7 +1,14 @@
+.sidebarFriendLink {
+  text-decoration: none;
+  color: inherit;
+}
 .sidebarFriend {
   display: flex;
   align-items: center;
-  margin-bottom: 15px;
+  padding: 10px 8px;
+}
+.sidebarFriend:hover {
+  background-color: #f2f2f2;
 }
 .sidebarFriendImg {
   width: 32px;

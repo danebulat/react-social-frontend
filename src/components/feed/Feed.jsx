@@ -6,34 +6,45 @@ import axios from 'axios';
 import {AuthContext} from '../../contexts/AuthContext';
 
 export default function Feed({ username }) {
+
   const [posts, setPosts] = useState([]);
   const { user } = useContext(AuthContext);
 
+  //fetch posts for user's timeline or profie page
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = username
-        ? await axios.get(`http://localhost:5000/api/posts/profile/${username}`, 
-        { headers: { authorization: "Bearer " + user.accessToken}})
- 
-        : await axios.get(`http://localhost:5000/api/posts/timeline/${user.id}`, 
-        { headers: { authorization: "Bearer " + user.accessToken}})
+      try {
+        const res = username
+          ? await axios.get(`http://localhost:5000/api/posts/profile/${username}`)
+          : await axios.get(`http://localhost:5000/api/posts/timeline/${user.id}`, 
+          { headers: { authorization: "Bearer " + user.accessToken}})
 
-      setPosts(res.data.sort((p1, p2) => {
-        return new Date(p2.created_at) - new Date(p1.created_at)
-      }));
+        setPosts(res.data.sort((p1, p2) => {
+          return new Date(p2.created_at) - new Date(p1.created_at)
+        }));
+      }
+      catch (err) {
+        console.log(err);
+      }
     }
-    fetchPosts();
-  }, [username, user.id]);
+    if (username !== null) {
+      fetchPosts();
+    }
+  }, [username, user]);
 
   return (
-    <div className="feed">
-      <div className="feedWrapper">
-        {(!username || username === user.username) && <Share />}
-        {posts.length && posts.map(p => 
-          <Post key={p.id} post={p} />
-        )}
+    <>
+      <div className="feed">
+        <div className="feedWrapper">
+          {(!username || (user && username === user.username)) && <Share setPosts={setPosts} />}
+          {posts.length > 0 && posts.map(p => 
+            <Post key={p.id} post={p} />
+          )}
+          {posts.length === 0 && 
+            <span>No posts yet.</span>}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

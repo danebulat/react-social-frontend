@@ -12,15 +12,7 @@ export default function Rightbar({ user }) {
   
   const [friends, setFriends] = useState([]);
   const {user:currentUser, dispatch} = useContext(AuthContext);
-  const [followed, setFollowed] = useState(currentUser.followingIds.includes(user?.id));
-
-  //TODO: Remove when fetching user from local storage
-  //set if current user follows this user
-  useEffect(() => {
-    setFollowed(
-      currentUser.followingIds.includes(user?.id)
-    );
-  }, [currentUser, user]);
+  const [followed, setFollowed] = useState(currentUser ? currentUser.followingIds.includes(user?.id) : false);
 
   //fetch following users
   useEffect(() => {
@@ -83,7 +75,7 @@ export default function Rightbar({ user }) {
   const ProfileRightBar = () => {
     return (
       <>
-      {user.username !== currentUser.username && (
+      {(currentUser && user.username !== currentUser.username) && (
         <button className="rightbarFollowButton" onClick={handleClick}>
           {followed ? "Unfollow" : "Follow" }
           {followed ? <Remove /> : <Add /> }

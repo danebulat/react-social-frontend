@@ -6,6 +6,7 @@ import Register from './pages/register/Register'
 import {useContext}     from 'react';
 import {AuthContext}    from './contexts/AuthContext';
 import LoggedInRedirect from './components/LoggedInRedirect';
+import ScrollToTop      from './hooks/ScrollToTop';
 
 function App() {
 
@@ -13,8 +14,11 @@ function App() {
 
   return ( 
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
-        <Route path="/" exact element={user ? <Home /> : <Register />} />
+        <Route path="/" exact element={
+          user ? <Home /> : <Register />
+        }/>
         <Route path="/login" element={
           <LoggedInRedirect>
             <Login />

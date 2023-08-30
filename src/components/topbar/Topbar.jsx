@@ -31,10 +31,17 @@ export default function Topbar() {
 
       <div className="topbarRight">
         <div className="topBarLinks">
-          <Link to="/" style={{textDecoration: "none", color: "inherit"}}>
-            <span className="topbarLink">Timeline</span>
-          </Link>
-          <span className="topbarLink" onClick={handleLogout}>Logout</span>
+
+          {user ? (
+            <Link to="/" style={{textDecoration: "none", color: "inherit"}}>
+              <span className="topbarLink">Timeline</span>
+            </Link>
+          ) : (
+            <span className="topbarLink topbarLinkDisabled">Timeline</span>
+          )}
+
+          {user &&
+          <span className="topbarLink" onClick={handleLogout}>Logout</span>}
         </div>
         <div className="topbarIcons">
           <div className="topbarIconItem">
@@ -51,10 +58,10 @@ export default function Topbar() {
           </div> 
         </div>
         
-        <Link to={`/profile/${user.username}`}>
+        {user && <Link to={`/profile/${user.username}`}>
           <img className="topbarImg" 
             src={user.profilePicture ? user.profilePicture : "/assets/person/noAvatar.png"} alt="" />
-        </Link>
+        </Link>}
       </div>
     </div>
   );

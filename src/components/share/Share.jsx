@@ -5,12 +5,21 @@ import { AuthContext } from '../../contexts/AuthContext';
 import axios from 'axios';
 import { Cancel } from '@mui/icons-material';
 
-export default function Share() {
+export default function Share({ setPosts }) {
 
   const { user } = useContext(AuthContext)
   const desc = useRef();
   const [file, setFile] = useState(null);
+  const [shareDisabled, setShareDisabled] = useState(true);
 
+  //handle input change
+  const handleChange = (e) => {
+    e.target.value === ''
+      ? setShareDisabled(true)
+      : setShareDisabled(false);
+  }
+
+  //handle submit
   const submitHandler = async (e) => {
     e.preventDefault();
     const newPost = {
@@ -26,7 +35,6 @@ export default function Share() {
       //upload image file to server
       try {
         const res = await axios.post('http://localhost:5000/api/upload', data);
-        console.log(`FILENAME: ${res.data.fileName}`);
         newPost.img = res.data.fileName;
       }
       catch (err) {
@@ -38,6 +46,10 @@ export default function Share() {
     try {
       const res = await axios.post('http://localhost:5000/api/posts', newPost,
         { headers: { authorization: 'Bearer ' + user.accessToken } });
+
+      setPosts(prev => [res.data, ...prev]);
+      setFile(null);
+      desc.current.value = '';
     }
     catch (err) {
       console.log(err);
@@ -50,7 +62,11 @@ export default function Share() {
         <div className="shareTop">
           <img className="shareProfileImg" 
             src={user.profilePicture ? user.profilePicture : "/assets/person/noAvatar.png"} />
-          <input ref={desc} placeholder={`What's in your mind ${user.username}?`} className="shareInput" />
+          <input ref={desc} 
+            placeholder={`What's in your mind ${user.username}?`} 
+            className="shareInput"
+            onChange={handleChange} 
+          />
         </div>
         <hr className="shareHr" />
 
@@ -87,7 +103,7 @@ export default function Share() {
             </div>
             
           </div>
-          <button type="submit" className="shareButton">Share</button>
+          <button type="submit" className="shareButton" disabled={shareDisabled}>Share</button>
         </form>
       </div>
     </div>

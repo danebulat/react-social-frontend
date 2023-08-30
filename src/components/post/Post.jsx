@@ -15,10 +15,12 @@ export default function Post({ post }) {
 
   //check if current user likes this post
   useEffect(() => {
-    setIsLiked(post.likeIds.includes(currentUser.id));
-  }, [currentUser.id, post.likeIds]);
+    if (currentUser !== null) {
+      setIsLiked(post.likeIds.includes(currentUser.id));
+    }
+  }, [currentUser, post.likeIds]);
 
-  //fetch author of post in user
+  //fetch author of post and store in user
   useEffect(() => {
     const fetchUser = async () => {
       const res = await axios.get(`http://localhost:5000/api/users?userId=${post.user_id}`)
@@ -29,6 +31,8 @@ export default function Post({ post }) {
 
   //handle current user liking post
   const likeHandler = async () => {
+    if (!currentUser) return;
+
     try {
       await axios.put(`http://localhost:5000/api/posts/${post.id}/like`, null,
        { headers: { authorization: "Bearer " + currentUser.accessToken}} );
@@ -69,8 +73,10 @@ export default function Post({ post }) {
 
         <div className="postBottom">
           <div className="postBottomLeft">
-            <img className="likeIcon" src="/assets/like.png" onClick={likeHandler} alt="" />
-            <img className="heartIcon" src="/assets/heart.png" onClick={likeHandler} alt="" />
+            <img className={currentUser ? "likeIcon" : "likeIcon iconDisabled"}
+              src="/assets/like.png" onClick={likeHandler} alt="" />
+            <img className={currentUser ? "likeIcon" : "likeIcon iconDisabled"}
+              src="/assets/heart.png" onClick={likeHandler} alt="" />
             <span className="postLikeCounter">{like} people like it</span>
           </div>
           <div className="postBottomRight">

@@ -56,6 +56,10 @@
   margin-right: 5px;
   cursor: pointer;
 }
+.iconDisabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
 .postLikeCounter {
   font-size: 15px;
 }

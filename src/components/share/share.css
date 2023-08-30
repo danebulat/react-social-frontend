@@ -61,6 +61,11 @@
   cursor: pointer;
   color: #fff;
 }
+.shareButton:disabled {
+  background-color: #91c791;
+  cursor: not-allowed;
+}
+
 .shareImgContainer {
   padding: 0 20px 10px 20px;
   position: relative;
