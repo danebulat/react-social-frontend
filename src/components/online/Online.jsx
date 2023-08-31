@@ -8,8 +8,8 @@ export default function Online({ user }) {
       <li className="rightbarFriend">
         <div className="rightbarProfileImgContainer">
           <img className="rightbarProfileImg" 
-            src={user.profilePicture 
-              ? `${basename}${user.profilePicture}`
+            src={user.profile_picture 
+              ? `${basename}${user.profile_picture}`
               : `${basename}/assets/person/noAvatar.png`} 
             alt="" 
           />

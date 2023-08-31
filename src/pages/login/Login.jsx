@@ -1,5 +1,5 @@
 import '@/pages/login/login.css';
-import { useContext, useRef } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { loginCall } from '../../apiCalls';
 import { AuthContext } from '../../contexts/AuthContext';
 import { CircularProgress } from '@mui/material';
@@ -31,6 +31,9 @@ export default function Login() {
         <div className="loginWrapper">
 
           <form className="loginBox" onSubmit={handleClick}>
+            {error && 
+              <span className="loginError">Invalid username or password.</span>}
+            
             <input required type="email" placeholder="Email" className="loginInput" ref={email} />
             <input required minLength="4" type="password" placeholder="Password" className="loginInput" ref={password} />
             <button className="loginButton" disabled={isFetching}>

@@ -6,8 +6,7 @@ import { Link } from 'react-router-dom';
 import {AuthContext} from '../../contexts/AuthContext';
 import { Add, Remove } from '@mui/icons-material';
 import lodash from 'lodash';
-import { serverUri } from '../../config/server';
-import { basename }  from '../../config/server';
+import { serverUri, basename } from '../../config/server';
 
 export default function Rightbar({ user }) {
   
@@ -81,9 +80,10 @@ export default function Rightbar({ user }) {
   const HomeRightbar = () => {
     return (
       <>
-        <img className="rightbarAd"  src="/assets/ad.jpg" alt="" />
+        <img className="rightbarAd"  src={`${basename}/assets/ad.jpg`} alt="" />
         <h4 className="rightbarTitle">Friends</h4>
 
+        {currentUserFriends.length === 0 && <span>No follwings.</span>}
         <ul className="rightbarFriendList">
           {currentUserFriends.map(friend => (
             <Online key={friend.id} user={friend} />
@@ -107,11 +107,11 @@ export default function Rightbar({ user }) {
       <div className="rightbarInfo">
         <div className="rightbarInfoItem">
           <span className="rightbarInfoKey">City:</span>
-          <span className="rightbarInfoValue">{user.city}</span>
+          <span className="rightbarInfoValue">{user.city ? user.city : '-'}</span>
         </div>
         <div className="rightbarInfoItem">
           <span className="rightbarInfoKey">From:</span>
-          <span className="rightbarInfoValue">{user.from}</span>
+          <span className="rightbarInfoValue">{user.from ? user.from : '-'}</span>
         </div>
         <div className="rightbarInfoItem">
           <span className="rightbarInfoKey">Relationship:</span>
@@ -122,6 +122,8 @@ export default function Rightbar({ user }) {
       </div>
       <h4 className="rightbarTitle">Friends</h4>
       <div className="rightbarFollowings">
+
+        {friends.length === 0 && <span>No followings.</span>}
 
         {friends.map(friend => (
           <Link key={friend.id} to={`/profile/${friend.username}`} 

@@ -4,8 +4,7 @@ import {useContext, useRef, useState} from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import axios from 'axios';
 import { Cancel } from '@mui/icons-material';
-import { serverUri } from '../../config/server';
-import { basename }  from '../../config/server';
+import { serverUri, basename } from '../../config/server';
 
 export default function Share({ setPosts }) {
 
@@ -49,6 +48,7 @@ export default function Share({ setPosts }) {
       const res = await axios.post(`${serverUri}/api/posts`, newPost,
         { headers: { authorization: 'Bearer ' + user.accessToken } });
 
+      console.log(res.data);
       setPosts(prev => [res.data, ...prev]);
       setFile(null);
       desc.current.value = '';
@@ -67,7 +67,7 @@ export default function Share({ setPosts }) {
               ? `${basename}${user.profilePicture}`
               : `${basename}/assets/person/noAvatar.png`} />
           <input ref={desc} 
-            placeholder={`What's on your mind ${user.username}?`} 
+            placeholder="What's on your mind?"
             className="shareInput"
             onChange={handleChange} 
           />
@@ -91,17 +91,17 @@ export default function Share({ setPosts }) {
                 onChange={(e) => setFile(e.target.files[0])} />
             </label>
             
-            <div className="shareOption">
+            <div className="shareOption na">
               <Label htmlColor="blue" className="shareIcon" />
               <span className="shareOptionText">Tag</span>
             </div>
             
-            <div className="shareOption">
+            <div className="shareOption na">
               <Room htmlColor="green" className="shareIcon" />
               <span className="shareOptionText">Location</span>
             </div>
             
-            <div className="shareOption">
+            <div className="shareOption na">
               <EmojiEmotions htmlColor="goldenrod" className="shareIcon" />
               <span className="shareOptionText">Feelings</span>
             </div>

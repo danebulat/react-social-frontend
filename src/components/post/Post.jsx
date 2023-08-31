@@ -5,8 +5,7 @@ import axios from 'axios';
 import { format } from 'timeago.js';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
-import { serverUri } from '../../config/server';
-import { basename }  from '../../config/server';
+import { serverUri, basename } from '../../config/server';
 
 export default function Post({ post }) {
 

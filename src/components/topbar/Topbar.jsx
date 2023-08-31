@@ -27,15 +27,15 @@ export default function Topbar() {
 
       <div className="topbarRight">
         <div className="topbarIcons">
-          <div className="topbarIconItem">
+          <div className="topbarIconItem" style={{cursor:"not-allowed"}}>
             <AccountCircle className="topbarIcon" />
             <span className="topbarIconBadge">1</span>
           </div> 
-          <div className="topbarIconItem">
+          <div className="topbarIconItem" style={{cursor:"not-allowed"}}>
             <CircleNotifications className="topbarIcon"/>
             <span className="topbarIconBadge">1</span>
           </div> 
-          <div className="topbarIconItem">
+          <div className="topbarIconItem" style={{cursor:"not-allowed"}}>
             <Chat className="topbarIcon"/>
             <span className="topbarIconBadge">2</span>
           </div> 

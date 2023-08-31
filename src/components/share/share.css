@@ -51,6 +51,13 @@
   padding: 4px 16px;
   cursor: pointer;
 }
+.shareOption:hover {
+  background-color: rgba(255,255,255,0.9);
+}
+.na {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
 .shareIcon {
   font-size: 20px !important;
   margin: 3px;

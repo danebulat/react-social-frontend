@@ -17,7 +17,7 @@ function App() {
       <ScrollToTop />
       <Routes>
         <Route path="/" exact element={
-          user ? <Home /> : <Register />
+          user ? <Home /> : <Login />
         }/>
         <Route path="/login" element={
           <LoggedInRedirect>

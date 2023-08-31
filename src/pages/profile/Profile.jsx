@@ -6,8 +6,7 @@ import Rightbar from '../../components/rightbar/Rightbar';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router';
-import { serverUri } from '../../config/server';
-import { basename }  from '../../config/server';
+import { serverUri, basename } from '../../config/server';
 
 export default function Profile() {
 

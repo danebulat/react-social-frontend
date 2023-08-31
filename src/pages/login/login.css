@@ -19,6 +19,11 @@
   border-radius: 2px;
   row-gap: 20px;
 }
+.loginError {
+  color: #d50000;
+  text-align: center;
+  font-size: 14px;
+}
 .loginInput {
   height: 40px;
   border-radius: 3px;
