@@ -15,6 +15,7 @@ import {
   AccountBox,
   Logout,
   Login } from '@mui/icons-material'
+import { serverUri } from '../../config/server';
 
 export default function Sidebar() {
   const [users, setUsers] = useState([]);
@@ -24,7 +25,7 @@ export default function Sidebar() {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get('http://localhost:5000/api/users/all');
+        const res = await axios.get(`${serverUri}/api/users/all`);
         setUsers(res.data);
       }
       catch (err) {

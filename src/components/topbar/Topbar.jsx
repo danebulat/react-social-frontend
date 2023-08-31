@@ -1,13 +1,13 @@
 import '@/components/topbar/topbar.css';
 import { Search, AccountCircle, Chat, CircleNotifications } from '@mui/icons-material';
-import {useContext} from 'react';
-import { Link } from 'react-router-dom';
+import { useContext }  from 'react';
+import { Link }        from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
-import { logoutCall } from '../../apiCalls.js';
+import { basename }    from '../../config/server';
 
 export default function Topbar() {
   
-  const { user, axiosJWT, dispatch } = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   return (
     <div className="topbarContainer">
@@ -43,7 +43,9 @@ export default function Topbar() {
         
         {user && <Link to={`/profile/${user.username}`}>
           <img className="topbarImg" 
-            src={user.profilePicture ? user.profilePicture : "/assets/person/noAvatar.png"} alt="" />
+            src={user.profilePicture 
+              ? `${basename}${user.profilePicture}` 
+              : `${basename}/assets/person/noAvatar.png`} alt="" />
         </Link>}
       </div>
     </div>

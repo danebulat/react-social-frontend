@@ -6,6 +6,8 @@ import { Link } from 'react-router-dom';
 import {AuthContext} from '../../contexts/AuthContext';
 import { Add, Remove } from '@mui/icons-material';
 import lodash from 'lodash';
+import { serverUri } from '../../config/server';
+import { basename }  from '../../config/server';
 
 export default function Rightbar({ user }) {
   
@@ -28,7 +30,7 @@ export default function Rightbar({ user }) {
     if (!lodash.isEmpty(user)) {
       const getFriends = async () => {
         try {
-          const friendList = await axios.get(`http://localhost:5000/api/users/friends/${user.id}`);
+          const friendList = await axios.get(`${serverUri}/api/users/friends/${user.id}`);
           setFriends(friendList.data);
         }
         catch (err) {
@@ -44,7 +46,7 @@ export default function Rightbar({ user }) {
     if (!lodash.isEmpty(currentUser) && !user) {
       const getCurrentUserFriends = async () => {
         try {
-          const res = await axios.get(`http://localhost:5000/api/users/friends/${currentUser.id}`);
+          const res = await axios.get(`${serverUri}/api/users/friends/${currentUser.id}`);
           setCurrentUserFriends(res.data);
         }
         catch (err) {
@@ -59,12 +61,14 @@ export default function Rightbar({ user }) {
   const handleClick = async () => {
     try {
       if (followed) {
-        await axios.put(`http://localhost:5000/api/users/${user.id}/unfollow`, null,
+        await axios.put(`${serverUri}/api/users/${user.id}/unfollow`, null,
           { headers: { authorization: `Bearer ${currentUser.accessToken}` }});
+
         dispatch({type:"UNFOLLOW", payload: user.id});
       } else {
-        await axios.put(`http://localhost:5000/api/users/${user.id}/follow`, null,
+        await axios.put(`${serverUri}/api/users/${user.id}/follow`, null,
           { headers: { authorization: `Bearer ${currentUser.accessToken}` }});
+
         dispatch({type:"FOLLOW", payload: user.id});
       }
     }
@@ -125,8 +129,8 @@ export default function Rightbar({ user }) {
             <div className="rightbarFollowing">
               <img className="rightbarFollowingImg" 
                 src={friend.profile_picture 
-                      ? friend.profile_picture 
-                      : '/assets/person/noAvatar.png'} 
+                      ? `${basename}${friend.profile_picture}` 
+                      : `${basename}/assets/person/noAvatar.png`} 
               />
               <span className="rightbarFollowingName">{friend.username}</span>
             </div>

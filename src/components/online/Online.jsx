@@ -1,5 +1,6 @@
 import '@/components/online/online.css';
 import { Link } from 'react-router-dom';
+import { basename } from '../../config/server';
 
 export default function Online({ user }) {
   return (
@@ -7,7 +8,9 @@ export default function Online({ user }) {
       <li className="rightbarFriend">
         <div className="rightbarProfileImgContainer">
           <img className="rightbarProfileImg" 
-            src={user.profilePicture ? user.profilePicture : "/assets/person/noAvatar.png"} 
+            src={user.profilePicture 
+              ? `${basename}${user.profilePicture}`
+              : `${basename}/assets/person/noAvatar.png`} 
             alt="" 
           />
           {/*<span className="rightbarOnline"></span>*/}

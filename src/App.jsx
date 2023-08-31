@@ -7,13 +7,13 @@ import {useContext}     from 'react';
 import {AuthContext}    from './contexts/AuthContext';
 import LoggedInRedirect from './components/LoggedInRedirect';
 import ScrollToTop      from './hooks/ScrollToTop';
+import { basename }     from './config/server';
 
 function App() {
-
   const { user } = useContext(AuthContext);
 
   return ( 
-    <BrowserRouter>
+    <BrowserRouter basename={basename}>
       <ScrollToTop />
       <Routes>
         <Route path="/" exact element={

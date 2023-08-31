@@ -5,6 +5,8 @@ import axios from 'axios';
 import { format } from 'timeago.js';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
+import { serverUri } from '../../config/server';
+import { basename }  from '../../config/server';
 
 export default function Post({ post }) {
 
@@ -23,7 +25,7 @@ export default function Post({ post }) {
   //fetch author of post and store in user
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(`http://localhost:5000/api/users?userId=${post.user_id}`)
+      const res = await axios.get(`${serverUri}/api/users?userId=${post.user_id}`)
       setUser(res.data);
     }
     fetchUser();
@@ -34,7 +36,7 @@ export default function Post({ post }) {
     if (!currentUser) return;
 
     try {
-      await axios.put(`http://localhost:5000/api/posts/${post.id}/like`, null,
+      await axios.put(`${serverUri}/api/posts/${post.id}/like`, null,
        { headers: { authorization: "Bearer " + currentUser.accessToken}} );
     }
     catch (err) {
@@ -53,7 +55,9 @@ export default function Post({ post }) {
             <div className="postTopLeft">
               <Link to={`/profile/${user.username}`}>
                 <img className="postProfileImg" 
-                  src={user.profile_picture || '/assets/person/noAvatar.png'} alt="" /> 
+                  src={user.profile_picture 
+                    ? `${basename}${user.profile_picture}`
+                    : `${basename}/assets/person/noAvatar.png`} alt="" /> 
               </Link>
               <span className="postUsername">
                 {user.username}
@@ -68,16 +72,22 @@ export default function Post({ post }) {
           <div className="postCenter">
             <span className="postText">{post?.desc}</span> 
             {post.img && 
-            <img className="postImg" crossOrigin="anonymous" 
-              src={`http://localhost:5000/images/${post.img}`} alt="" />}
+            <img className="postImg" 
+              crossOrigin="anonymous" 
+              src={`${serverUri}/images/${post.img}`} alt="" />}
           </div>
 
           <div className="postBottom">
             <div className="postBottomLeft">
+
               <img className={currentUser ? "likeIcon" : "likeIcon iconDisabled"}
-                src="/assets/like.png" onClick={likeHandler} alt="" />
+                src={`${basename}/assets/like.png`} 
+                onClick={likeHandler} alt="" />
+
               <img className={currentUser ? "likeIcon" : "likeIcon iconDisabled"}
-                src="/assets/heart.png" onClick={likeHandler} alt="" />
+                src={`${basename}/assets/heart.png`}
+                onClick={likeHandler} alt="" />
+
               <span className="postLikeCounter">{like} people like it</span>
             </div>
             <div className="postBottomRight">

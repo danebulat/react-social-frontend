@@ -2,8 +2,9 @@ import '@/components/feed/feed.css';
 import Share from '../share/Share';
 import Post from '../post/Post';
 import { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '../../contexts/AuthContext';
+import { serverUri }   from '../../config/server';
 import axios from 'axios';
-import {AuthContext} from '../../contexts/AuthContext';
 
 export default function Feed({ username }) {
 
@@ -15,8 +16,8 @@ export default function Feed({ username }) {
     const fetchPosts = async () => {
       try {
         const res = username
-          ? await axios.get(`http://localhost:5000/api/posts/profile/${username}`)
-          : await axios.get(`http://localhost:5000/api/posts/timeline/${user.id}`, 
+          ? await axios.get(`${serverUri}/api/posts/profile/${username}`)
+          : await axios.get(`${serverUri}/api/posts/timeline/${user.id}`, 
           { headers: { authorization: "Bearer " + user.accessToken}})
 
         setPosts(res.data.sort((p1, p2) => {

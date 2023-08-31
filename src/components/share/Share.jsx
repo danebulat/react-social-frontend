@@ -4,6 +4,8 @@ import {useContext, useRef, useState} from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import axios from 'axios';
 import { Cancel } from '@mui/icons-material';
+import { serverUri } from '../../config/server';
+import { basename }  from '../../config/server';
 
 export default function Share({ setPosts }) {
 
@@ -34,7 +36,7 @@ export default function Share({ setPosts }) {
 
       //upload image file to server
       try {
-        const res = await axios.post('http://localhost:5000/api/upload', data);
+        const res = await axios.post(`${serverUri}/api/upload`, data);
         newPost.img = res.data.fileName;
       }
       catch (err) {
@@ -44,7 +46,7 @@ export default function Share({ setPosts }) {
 
     //store new post in db
     try {
-      const res = await axios.post('http://localhost:5000/api/posts', newPost,
+      const res = await axios.post(`${serverUri}/api/posts`, newPost,
         { headers: { authorization: 'Bearer ' + user.accessToken } });
 
       setPosts(prev => [res.data, ...prev]);
@@ -61,9 +63,11 @@ export default function Share({ setPosts }) {
       <div className="shareWrapper">
         <div className="shareTop">
           <img className="shareProfileImg" 
-            src={user.profilePicture ? user.profilePicture : "/assets/person/noAvatar.png"} />
+            src={user.profilePicture 
+              ? `${basename}${user.profilePicture}`
+              : `${basename}/assets/person/noAvatar.png`} />
           <input ref={desc} 
-            placeholder={`What's in your mind ${user.username}?`} 
+            placeholder={`What's on your mind ${user.username}?`} 
             className="shareInput"
             onChange={handleChange} 
           />

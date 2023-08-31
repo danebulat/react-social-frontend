@@ -6,6 +6,8 @@ import Rightbar from '../../components/rightbar/Rightbar';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router';
+import { serverUri } from '../../config/server';
+import { basename }  from '../../config/server';
 
 export default function Profile() {
 
@@ -17,7 +19,7 @@ export default function Profile() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/users?username=${username}`)
+        const res = await axios.get(`${serverUri}/api/users?username=${username}`)
         setUser(res.data);
         setUserFound(true);
       }
@@ -41,9 +43,13 @@ export default function Profile() {
           <div className="profileRightTop">
             <div className="profileCover">
               <img className="profileCoverImg" 
-                src={user.cover_picture ? user.cover_picture : "/assets/person/noCover.jpg"} alt="" />
+                src={user.cover_picture 
+                  ? `${basename}${user.cover_picture}` 
+                  : `${basename}/assets/person/noCover.jpg`} alt="" />
               <img className="profileUserImg" 
-                src={user.profile_picture ? user.profile_picture : "/assets/person/noAvatar.png"} alt="" />
+                src={user.profile_picture 
+                  ? `${basename}${user.profile_picture}` 
+                  : `${basename}/assets/person/noAvatar.png`} alt="" />
 
               <div className="profileInfo">
                 <div className="profileInfoCont">
