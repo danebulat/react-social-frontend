@@ -41,18 +41,20 @@ export default function Profile() {
           <div className="profileRightTop">
             <div className="profileCover">
               <img className="profileCoverImg" 
-                src={user.cover_picture ? user.cover_picture : "/assets/person/noCover.png"} alt="" />
+                src={user.cover_picture ? user.cover_picture : "/assets/person/noCover.jpg"} alt="" />
               <img className="profileUserImg" 
                 src={user.profile_picture ? user.profile_picture : "/assets/person/noAvatar.png"} alt="" />
-            </div>
-            
-            <div className="profileInfo">
-              <h4 className="profileInfoName">
-                {userFound ? user.username : "Not Found"}
-              </h4>
-              <span className="profileInfoDesc">
-                {userFound ? user.desc : "404"}
-              </span>
+
+              <div className="profileInfo">
+                <div className="profileInfoCont">
+                  <h4 className="profileInfoName">
+                    {userFound ? user.username : "Not Found"}
+                  </h4>
+                  <span className="profileInfoDesc">
+                    {userFound ? user.desc : "404"}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
 

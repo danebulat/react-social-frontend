@@ -30,9 +30,14 @@ function App() {
           </LoggedInRedirect>
         }/>
         <Route path="/profile/:username" element={<Profile />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   );
+}
+
+function NotFoundPage() { 
+  return (<h1>404: Page Not Found</h1>);
 }
 
 export default App;

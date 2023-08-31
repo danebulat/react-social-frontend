@@ -34,15 +34,16 @@ const AuthReducer = (state, action) => {
           followingIds: [...state.user.followingIds, action.payload]
         },
       };
-    case "UNFOLLOW":
+    case "UNFOLLOW": {
       return {
         ...state,
         user: {
           ...state.user,
-          followingIds: state.user.followingIds.filter(
-            id => id !== action.payload)
+          followingIds: state.user.followingIds.filter(uid => 
+            uid !== action.payload)
         },
       };
+    }
     case "LOGOUT":
       return {
         user: null,

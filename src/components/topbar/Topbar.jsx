@@ -1,5 +1,5 @@
 import '@/components/topbar/topbar.css';
-import { Search, Person, Chat, Notifications } from '@mui/icons-material';
+import { Search, AccountCircle, Chat, CircleNotifications } from '@mui/icons-material';
 import {useContext} from 'react';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
@@ -8,10 +8,6 @@ import { logoutCall } from '../../apiCalls.js';
 export default function Topbar() {
   
   const { user, axiosJWT, dispatch } = useContext(AuthContext);
-
-  const handleLogout = async () => {
-    await logoutCall(user, axiosJWT, dispatch);
-  }
 
   return (
     <div className="topbarContainer">
@@ -30,31 +26,18 @@ export default function Topbar() {
       </div>
 
       <div className="topbarRight">
-        <div className="topBarLinks">
-
-          {user ? (
-            <Link to="/" style={{textDecoration: "none", color: "inherit"}}>
-              <span className="topbarLink">Timeline</span>
-            </Link>
-          ) : (
-            <span className="topbarLink topbarLinkDisabled">Timeline</span>
-          )}
-
-          {user &&
-          <span className="topbarLink" onClick={handleLogout}>Logout</span>}
-        </div>
         <div className="topbarIcons">
           <div className="topbarIconItem">
-            <Person />
+            <AccountCircle className="topbarIcon" />
             <span className="topbarIconBadge">1</span>
           </div> 
           <div className="topbarIconItem">
-            <Chat />
+            <CircleNotifications className="topbarIcon"/>
+            <span className="topbarIconBadge">1</span>
+          </div> 
+          <div className="topbarIconItem">
+            <Chat className="topbarIcon"/>
             <span className="topbarIconBadge">2</span>
-          </div> 
-          <div className="topbarIconItem">
-            <Notifications />
-            <span className="topbarIconBadge">1</span>
           </div> 
         </div>
         

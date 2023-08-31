@@ -1,45 +1,29 @@
 .login {
-  width: 100vw;
-  height: 100vh;
-  background-color: #f0f2f5;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  background-color: #f0f2f5;
 }
 .loginWrapper {
-  width: 70%;
-  height: 70%;
+  flex: 9;
   display: flex;
-}
-.loginLeft, .loginRight {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-.loginLogo {
-  font-size: 50px;
-  font-weight: 800;
-  color: #1775ee;
-  margin-bottom: 10px;
-}
-.loginDesc {
-  font-size: 24px;
+  row-gap: 24px;
 }
 .loginBox {
-  height: 300px;
-  padding: 20px;
-  background-color: #fff;
-  border-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  min-width: 400px;
+  max-height: 260px;
+  padding: 20px;
+  margin: 20px auto;
+  background-color: #fff;
+  border-radius: 2px;
+  row-gap: 20px;
 }
 .loginInput {
-  height: 50px;
-  border-radius: 10px;
-  border: 1px solid gray;
-  font-size: 18px;
+  height: 40px;
+  border-radius: 3px;
+  border: 1px solid #dad6d3;
+  font-size: 16px;
   padding-left: 20px;
 }
 .loginInput:focus {
@@ -47,13 +31,16 @@
 }
 .loginButton {
   height: 50px;
-  border-radius: 10px;
+  border-radius: 3px;
   border: none;
-  background-color: #1775ee;
-  color: #fff;
-  font-size: 20px;
+  background-color: #475f87;
+  color: #f3f3f3;
+  font-size: 16px;
   font-weight: 500;
   cursor: pointer;
+}
+.loginButton:hover {
+  background-color: #536d99;
 }
 .loginButton:focus {
   outline: none;
@@ -61,21 +48,20 @@
 .loginButton:disabled {
   cursor: not-allowed;
 }
-.loginForgot {
-  text-align: center;
-  color: #1775ee;
-}
-.loginRegister {
+.loginRegisterButton {
   width: 60%;
   align-self: center;
   height: 50px;
-  border-radius: 10px;
+  border-radius: 3px;
   border: none;
-  background-color: #42b72a;
-  color: #fff;
-  font-size: 20px;
+  background-color: #1d1d1d;
+  color: #f3f3f3;
+  font-size: 16px;
   font-weight: 500;
   cursor: pointer;
+}
+.loginRegisterButton:hover {
+  background-color: #383838;
 }
 .loginRegisterButtonCont {
   text-align: center;

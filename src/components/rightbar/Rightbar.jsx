@@ -1,6 +1,5 @@
 import '@/components/rightbar/rightbar.css';
 import Online from '../online/Online';
-import { Users } from '../../dummyData.js';
 import { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
@@ -11,10 +10,20 @@ import lodash from 'lodash';
 export default function Rightbar({ user }) {
   
   const [friends, setFriends] = useState([]);
+  const [currentUserFriends, setCurrentUserFriends] = useState([]);
   const {user:currentUser, dispatch} = useContext(AuthContext);
   const [followed, setFollowed] = useState(currentUser ? currentUser.followingIds.includes(user?.id) : false);
 
-  //fetch following users
+  //check if current user is following this profile
+  useEffect(() => {
+    if (!lodash.isEmpty(currentUser) && (!lodash.isEmpty(user))) {
+      currentUser.followingIds.includes(user.id)
+        ? setFollowed(true)
+        : setFollowed(false);
+    }
+  }, [user, currentUser]);
+
+  //fetch user following users
   useEffect(() => {
     if (!lodash.isEmpty(user)) {
       const getFriends = async () => {
@@ -30,17 +39,32 @@ export default function Rightbar({ user }) {
     }
   }, [user]);
 
+  //fetch current user friends if on timeline page
+  useEffect(() => {
+    if (!lodash.isEmpty(currentUser) && !user) {
+      const getCurrentUserFriends = async () => {
+        try {
+          const res = await axios.get(`http://localhost:5000/api/users/friends/${currentUser.id}`);
+          setCurrentUserFriends(res.data);
+        }
+        catch (err) {
+          console.log(err);
+        }
+      }
+      getCurrentUserFriends();
+    }
+  }, [currentUser]);
+
+  //follow or unfollow this user
   const handleClick = async () => {
     try {
       if (followed) {
         await axios.put(`http://localhost:5000/api/users/${user.id}/unfollow`, null,
           { headers: { authorization: `Bearer ${currentUser.accessToken}` }});
-
         dispatch({type:"UNFOLLOW", payload: user.id});
       } else {
         await axios.put(`http://localhost:5000/api/users/${user.id}/follow`, null,
           { headers: { authorization: `Bearer ${currentUser.accessToken}` }});
-        
         dispatch({type:"FOLLOW", payload: user.id});
       }
     }
@@ -53,19 +77,12 @@ export default function Rightbar({ user }) {
   const HomeRightbar = () => {
     return (
       <>
-        <div className="birthdayContainer">
-          <img className="birthdayImg" src="/assets/gift.png" alt="" />
-          <span className="birthdayText">
-            <b>Pola Foster</b> and <b>3 other friends</b> have a birthday today
-          </span>
-        </div>
-
-        <img className="rightbarAd"  src="/assets/ad.png" alt="" />
-        <h4 className="rightbarTitle">Online Friends</h4>
+        <img className="rightbarAd"  src="/assets/ad.jpg" alt="" />
+        <h4 className="rightbarTitle">Friends</h4>
 
         <ul className="rightbarFriendList">
-          {Users.map(u => (
-            <Online key={u.id} user={u} />
+          {currentUserFriends.map(friend => (
+            <Online key={friend.id} user={friend} />
           ))}
         </ul>
       </>
@@ -82,7 +99,7 @@ export default function Rightbar({ user }) {
         </button>
       )}
 
-      <h4 className="rightbarTitle">User information</h4>
+      <h4 className="rightbarTitle">Information</h4>
       <div className="rightbarInfo">
         <div className="rightbarInfoItem">
           <span className="rightbarInfoKey">City:</span>
@@ -99,11 +116,12 @@ export default function Rightbar({ user }) {
           </span>
         </div>
       </div>
-      <h4 className="rightbarTitle">User friends</h4>
+      <h4 className="rightbarTitle">Friends</h4>
       <div className="rightbarFollowings">
 
         {friends.map(friend => (
-          <Link key={friend.id} to={`/profile/${friend.username}`} style={{ textDecoration: "none" }}>
+          <Link key={friend.id} to={`/profile/${friend.username}`} 
+                style={{ textDecoration: "none" }}>
             <div className="rightbarFollowing">
               <img className="rightbarFollowingImg" 
                 src={friend.profile_picture 

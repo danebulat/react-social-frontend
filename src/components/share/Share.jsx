@@ -82,7 +82,7 @@ export default function Share({ setPosts }) {
 
             <label htmlFor="file" className="shareOption">
               <PermMedia htmlColor="tomato" className="shareIcon" />
-              <span className="shareOptionText">Photo or Video</span>
+              <span className="shareOptionText">Photo</span>
               <input style={{display:"none"}} type="file" id="file" name="file" accept="image/*" 
                 onChange={(e) => setFile(e.target.files[0])} />
             </label>
@@ -101,7 +101,6 @@ export default function Share({ setPosts }) {
               <EmojiEmotions htmlColor="goldenrod" className="shareIcon" />
               <span className="shareOptionText">Feelings</span>
             </div>
-            
           </div>
           <button type="submit" className="shareButton" disabled={shareDisabled}>Share</button>
         </form>

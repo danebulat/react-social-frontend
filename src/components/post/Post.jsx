@@ -47,40 +47,42 @@ export default function Post({ post }) {
   return (
     <div className="post">
       <div className="postWrapper">
-        
-        <div className="postTop">
-          <div className="postTopLeft">
-            <Link to={`/profile/${user.username}`}>
-              <img className="postProfileImg" 
-                src={user.profile_picture || '/assets/person/noAvatar.png'} alt="" /> 
-            </Link>
-            <span className="postUsername">
-              {user.username}
-            </span>
-            <span className="postDate">{format(post.created_at)}</span>
-          </div>
-          <div className="postTopRight">
-            <MoreVert />
-          </div>
-        </div>
+        <div className="postWrapperInner">
 
-        <div className="postCenter">
-          <span className="postText">{post?.desc}</span> 
-          {post.img && 
-          <img className="postImg" crossOrigin="anonymous" 
-            src={`http://localhost:5000/images/${post.img}`} alt="" />}
-        </div>
-
-        <div className="postBottom">
-          <div className="postBottomLeft">
-            <img className={currentUser ? "likeIcon" : "likeIcon iconDisabled"}
-              src="/assets/like.png" onClick={likeHandler} alt="" />
-            <img className={currentUser ? "likeIcon" : "likeIcon iconDisabled"}
-              src="/assets/heart.png" onClick={likeHandler} alt="" />
-            <span className="postLikeCounter">{like} people like it</span>
+          <div className="postTop">
+            <div className="postTopLeft">
+              <Link to={`/profile/${user.username}`}>
+                <img className="postProfileImg" 
+                  src={user.profile_picture || '/assets/person/noAvatar.png'} alt="" /> 
+              </Link>
+              <span className="postUsername">
+                {user.username}
+              </span>
+              <span className="postDate">{format(post.created_at)}</span>
+            </div>
+            <div className="postTopRight">
+              <MoreVert />
+            </div>
           </div>
-          <div className="postBottomRight">
-            <span className="postCommentText">0 comments</span>
+
+          <div className="postCenter">
+            <span className="postText">{post?.desc}</span> 
+            {post.img && 
+            <img className="postImg" crossOrigin="anonymous" 
+              src={`http://localhost:5000/images/${post.img}`} alt="" />}
+          </div>
+
+          <div className="postBottom">
+            <div className="postBottomLeft">
+              <img className={currentUser ? "likeIcon" : "likeIcon iconDisabled"}
+                src="/assets/like.png" onClick={likeHandler} alt="" />
+              <img className={currentUser ? "likeIcon" : "likeIcon iconDisabled"}
+                src="/assets/heart.png" onClick={likeHandler} alt="" />
+              <span className="postLikeCounter">{like} people like it</span>
+            </div>
+            <div className="postBottomRight">
+              <span className="postCommentText">0 comments</span>
+            </div>
           </div>
         </div>
 

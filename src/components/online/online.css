@@ -1,17 +1,21 @@
 .rightbarFriend {
   display: flex;
   align-items: center;
-  margin-bottom: 15px;
+  padding: 8px;
+}
+.rightbarFriend:hover {
+  background-color: #efefef;
 }
 .rightbarProfileImgContainer {
   margin-right: 10px;
   position: relative;
 }
 .rightbarProfileImg {
-  width: 40px;
-  height: 40px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   object-fit: cover;
+  flex-shrink: 0;
 }
 .rightbarOnline {
   width: 12px;
@@ -24,6 +28,7 @@
   border: 2px solid #fff;
 }
 .rightbarUsername {
-  font-weight: 500;
+  font-weight: 400;
+  font-size: 14px;
 }
 

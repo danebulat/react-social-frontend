@@ -3,6 +3,8 @@ import { useRef, useContext } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import { registerCall } from '../../apiCalls'; 
 import { Link } from 'react-router-dom';
+import Topbar from '../../components/topbar/Topbar';
+import Sidebar from '../../components/sidebar/Sidebar';
 
 export default function Register() {
 
@@ -29,30 +31,27 @@ export default function Register() {
   }
 
   return (
-    <div className="login">
-      <div className="loginWrapper">
-        
-        <div className="loginLeft">
-          <h3 className="loginLogo">Social App</h3> 
-          <span className="loginDesc">
-            Connect with friends and the world around you on Social App.
-          </span>
-        </div>
+    <>
+      <Topbar />
 
-        <div className="loginRight">
-          <form onSubmit={handleClick} className="loginBox">
+      <div className="login">
+        <Sidebar />
+
+        <div className="loginWrapper">
+
+          <form onSubmit={handleClick} className="registerBox">
             <input ref={email} required type="email" placeholder="Email" className="loginInput" />
             <input ref={username} required placeholder="Username" className="loginInput" />
             <input ref={password} required type="password" placeholder="Password" className="loginInput" />
-            <input ref={passwordAgain} required type="password" placeholder="Password" className="loginInput" />
+            <input ref={passwordAgain} required type="password" placeholder="Confirm Password" className="loginInput" />
             <button type="submit" className="loginButton">Sign Up</button>
             <Link className="loginRegisterButtonCont" to="/login">
-              <button className="loginRegister">Log into Account</button>
+              <button className="loginRegisterButton">Log into Account</button>
             </Link>
           </form>
-        </div>
 
+        </div>
       </div>
-    </div>
+    </>
   );
 }
