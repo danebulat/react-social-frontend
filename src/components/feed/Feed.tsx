@@ -5,10 +5,15 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import { serverUri }   from '../../config/server';
 import axios from 'axios';
+import { PostType } from '../../types/types';
 
-export default function Feed({ username }) {
+type FeedProps = {
+  username?: string;
+}
 
-  const [posts, setPosts] = useState([]);
+export default function Feed({ username }: FeedProps) {
+
+  const [posts, setPosts] = useState<PostType[]>([]);
   const { user } = useContext(AuthContext);
 
   //fetch posts for user's timeline or profie page
@@ -17,11 +22,11 @@ export default function Feed({ username }) {
       try {
         const res = username
           ? await axios.get(`${serverUri}/api/posts/profile/${username}`)
-          : await axios.get(`${serverUri}/api/posts/timeline/${user.id}`, 
-          { headers: { authorization: "Bearer " + user.accessToken}})
+          : await axios.get(`${serverUri}/api/posts/timeline/${user!.id}`, 
+          { headers: { authorization: "Bearer " + user!.accessToken}})
 
-        setPosts(res.data.sort((p1, p2) => {
-          return new Date(p2.created_at) - new Date(p1.created_at)
+        setPosts(res.data.sort((p1: PostType, p2: PostType) => {
+          return Number(new Date(p2.created_at)) - Number(new Date(p1.created_at))
         }));
       }
       catch (err) {

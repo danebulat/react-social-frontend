@@ -1,15 +1,16 @@
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import jwt_decode from 'jwt-decode';
 import { serverUri } from './config/server';
+import { User, DecodedToken, UserCredentials, DispatchType } from './types/types';
 
-export function getAxiosJWTInstance(currentUser, dispatch) {
+export function getAxiosJWTInstance(currentUser: User, dispatch: DispatchType) {
   const axiosJWT = axios.create();
 
   // check refresh token before every request
   axiosJWT.interceptors.request.use(
     async (config) => {
       let currentDate = new Date();
-      const decodedToken = jwt_decode(currentUser.accessToken);
+      const decodedToken = jwt_decode<DecodedToken>(currentUser.accessToken);
   
       // generate new tokens if access token expired
       if (decodedToken.exp * 1000 < currentDate.getTime()) {
@@ -28,7 +29,7 @@ export function getAxiosJWTInstance(currentUser, dispatch) {
   return axiosJWT;
 }
 
-export const loginCall = async (userCredentials, dispatch) => {
+export const loginCall = async (userCredentials: UserCredentials, dispatch: DispatchType) => {
   dispatch({type: "LOGIN_START"});
 
   try {
@@ -36,15 +37,14 @@ export const loginCall = async (userCredentials, dispatch) => {
     localStorage.setItem('currentUser', JSON.stringify(res.data));
     
     const currentUser = res.data;
-    const axiosJWT = getAxiosJWTInstance(currentUser, dispatch);
-    dispatch({type: "LOGIN_SUCCESS", payload: { currentUser, axiosJWT }});
+    const axiosJWT = getAxiosJWTInstance(currentUser, dispatch); dispatch({type: "LOGIN_SUCCESS", payload: { currentUser, axiosJWT }});
   } 
-  catch(err) {
+  catch(err: any) {
     dispatch({type: "LOGIN_FAILURE", payload: err});
   }
 }
 
-export const registerCall = async (userCredentials, dispatch) => {
+export const registerCall = async (userCredentials: UserCredentials, dispatch: DispatchType) => {
   try {
     const res = await axios.post(`${serverUri}/api/register`, userCredentials);
     localStorage.setItem('currentUser', JSON.stringify(res.data));
@@ -58,7 +58,7 @@ export const registerCall = async (userCredentials, dispatch) => {
   }
 }
 
-export const logoutCall = async (currentUser, axiosJWT, dispatch) => {
+export const logoutCall = async (currentUser: User, axiosJWT: AxiosInstance, dispatch: DispatchType) => {
   try {
     await axiosJWT.post(`${serverUri}/api/logout`,
       { token: currentUser.refreshToken },
@@ -72,7 +72,7 @@ export const logoutCall = async (currentUser, axiosJWT, dispatch) => {
   }
 }
 
-export const refreshTokenCall = async (currentUser, dispatch) => {
+export const refreshTokenCall = async (currentUser: User, dispatch: DispatchType) => {
   try {
     const res = await axios.post(`${serverUri}/api/refresh`,
       { token: currentUser.refreshToken });

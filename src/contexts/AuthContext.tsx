@@ -1,23 +1,35 @@
 import { createContext, useReducer, useEffect } from 'react';
-import AuthReducer from './AuthReducer.js';
+import AuthReducer             from './AuthReducer.js';
 import { getAxiosJWTInstance } from '../apiCalls.js';
+import { AuthState, User }     from '../types/types.js';
 
-const INITIAL_STATE = {
-  user: JSON.parse(localStorage.getItem('currentUser')),
+function getUserLocalStorage(): string | null {
+  return localStorage.getItem('currentUser');
+}
+
+const INITIAL_STATE: AuthState = {
+  user: getUserLocalStorage() 
+          ? JSON.parse(localStorage.getItem('currentUser') as string)
+          : null,
   isFetching: false,
   error: false,
   axiosJWT: null,
 };
 
+/* component to wrap app children */
 export const AuthContext = createContext(INITIAL_STATE);
 
-export const AuthContextProvider = ({ children }) => {
+/* component to import and warp app */
+export const AuthContextProvider = ({ children }: { children: React.ReactNode }) => {
+
   const [state, dispatch] = useReducer(AuthReducer, INITIAL_STATE);
 
   //check local storage on page load and log in if user found
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem('currentUser'));
-    if (storedUser) {
+    const storedUserJSON = localStorage.getItem('currentUser')
+
+    if (storedUserJSON) {
+      const storedUser: User = JSON.parse(storedUserJSON);
       dispatch({ 
         type: "LOGIN_SUCCESS", 
         payload: {currentUser: storedUser, axiosJWT: getAxiosJWTInstance(storedUser, dispatch)}

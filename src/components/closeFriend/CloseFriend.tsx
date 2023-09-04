@@ -1,8 +1,13 @@
 import '@/components/closeFriend/closeFriend.css';
 import { Link } from 'react-router-dom';
 import { basename } from '../../config/server';
+import { SidebarUser } from '../../types/types';
 
-export default function CloseFriend({ user }) {
+type CloseFriendProps = {
+  user: SidebarUser;
+}
+
+export default function CloseFriend({ user }: CloseFriendProps) {
   return (
     <Link className="sidebarFriendLink" to={`/profile/${user.username}`}>
       <li className="sidebarFriend">

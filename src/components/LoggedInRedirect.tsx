@@ -2,7 +2,11 @@ import { useContext } from "react";
 import { useLocation, Navigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 
-export default function LoggedInRedirect({ children }) {
+type LoggedInRedirectProps = {
+  children: React.ReactNode;
+}
+
+export default function LoggedInRedirect({ children }: LoggedInRedirectProps) {
   let location = useLocation();
   let { user } = useContext(AuthContext);
 

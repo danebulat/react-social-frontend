@@ -1,4 +1,6 @@
-const AuthReducer = (state, action) => {
+import { ActionType, AuthState } from "../types/types";
+
+const AuthReducer = (state: AuthState, action: ActionType): AuthState => {
   switch (action.type) {
     case "LOGIN_START":
       return {
@@ -17,7 +19,7 @@ const AuthReducer = (state, action) => {
       return {
         user: null,
         isFetching: false,
-        error: action.payload,
+        error: true,
       };
     case "REGISTER_COMPLETE":
       return {
@@ -27,19 +29,23 @@ const AuthReducer = (state, action) => {
         error: false,
       };
     case "FOLLOW":
+      if (!state.user) throw Error('User error');
+
       return {
         ...state,
         user: {
           ...state.user,
-          followingIds: [...state.user.followingIds, action.payload]
+          followingIds: [...state.user!.followingIds, action.payload]
         },
       };
     case "UNFOLLOW": {
+      if (!state.user) throw Error('User error');
+
       return {
         ...state,
         user: {
           ...state.user,
-          followingIds: state.user.followingIds.filter(uid => 
+          followingIds: state.user!.followingIds.filter(uid => 
             uid !== action.payload)
         },
       };
@@ -52,6 +58,8 @@ const AuthReducer = (state, action) => {
         error: false,
       };
     case "REFRESH_TOKENS":
+      if (!state.user) throw Error('User error');
+
       return {
         ...state,
         user: {

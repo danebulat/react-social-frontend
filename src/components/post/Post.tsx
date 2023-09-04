@@ -6,12 +6,17 @@ import { format } from 'timeago.js';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../contexts/AuthContext';
 import { serverUri, basename } from '../../config/server';
+import { PostType, FetchedUser } from '../../types/types';
 
-export default function Post({ post }) {
+type PostProps = {
+  post: PostType;
+}
 
-  const [like, setLike] = useState(post.likes);
+export default function Post({ post }: PostProps) {
+
+  const [like, setLike] = useState<number>(post.likes);
   const [isLiked, setIsLiked] = useState(false);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState<FetchedUser | null>(null);
   const {user:currentUser} = useContext(AuthContext);
 
   //check if current user likes this post
@@ -52,14 +57,14 @@ export default function Post({ post }) {
 
           <div className="postTop">
             <div className="postTopLeft">
-              <Link to={`/profile/${user.username}`}>
+              <Link to={`/profile/${user?.username}`}>
                 <img className="postProfileImg" 
-                  src={user.profile_picture 
+                  src={user?.profile_picture 
                     ? `${basename}${user.profile_picture}`
                     : `${basename}/assets/person/noAvatar.png`} alt="" /> 
               </Link>
               <span className="postUsername">
-                {user.username}
+                {user?.username}
               </span>
               <span className="postDate">{format(post.created_at)}</span>
             </div>

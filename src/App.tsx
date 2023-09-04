@@ -16,7 +16,7 @@ function App() {
     <BrowserRouter basename={basename}>
       <ScrollToTop />
       <Routes>
-        <Route path="/" exact element={
+        <Route path="/" element={
           user ? <Home /> : <Login />
         }/>
         <Route path="/login" element={

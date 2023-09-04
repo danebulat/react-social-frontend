@@ -16,9 +16,10 @@ import {
   Logout,
   Login } from '@mui/icons-material'
 import { serverUri } from '../../config/server';
+import { SidebarUser } from '../../types/types';
 
 export default function Sidebar() {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<SidebarUser[]>([]);
   const { user, axiosJWT, dispatch } = useContext(AuthContext);
 
   //fetch all users
@@ -36,7 +37,8 @@ export default function Sidebar() {
   }, []);
 
   const handleLogout = async () => {
-    await logoutCall(user, axiosJWT, dispatch);
+    user && axiosJWT && dispatch &&
+      await logoutCall(user, axiosJWT, dispatch);
   }
 
   return (

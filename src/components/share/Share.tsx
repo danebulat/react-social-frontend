@@ -1,30 +1,41 @@
 import '@/components/share/share.css';
 import { PermMedia, Label, Room, EmojiEmotions } from '@mui/icons-material';
-import {useContext, useRef, useState} from 'react';
+import {Dispatch, SetStateAction, useContext, useRef, useState} from 'react';
 import { AuthContext } from '../../contexts/AuthContext';
 import axios from 'axios';
 import { Cancel } from '@mui/icons-material';
 import { serverUri, basename } from '../../config/server';
+import { PostType } from '../../types/types';
 
-export default function Share({ setPosts }) {
+type NewPost = {
+  desc: string;
+  img: string;
+}
 
-  const { user } = useContext(AuthContext)
-  const desc = useRef();
-  const [file, setFile] = useState(null);
+type ShareProps = {
+  setPosts: Dispatch<SetStateAction<PostType[]>>;
+}
+
+export default function Share({ setPosts }: ShareProps) {
+
+  const {user}          = useContext(AuthContext)
+  const desc            = useRef<HTMLInputElement>(null);
+  const [file, setFile] = useState<File | null>(null);
   const [shareDisabled, setShareDisabled] = useState(true);
 
   //handle input change
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.target.value === ''
       ? setShareDisabled(true)
       : setShareDisabled(false);
   }
 
   //handle submit
-  const submitHandler = async (e) => {
+  const submitHandler = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const newPost = {
-      desc: desc.current.value,
+    const newPost: NewPost = {
+      desc: desc.current!.value,
+      img: '',
     };
 
     if (file) {
@@ -46,12 +57,11 @@ export default function Share({ setPosts }) {
     //store new post in db
     try {
       const res = await axios.post(`${serverUri}/api/posts`, newPost,
-        { headers: { authorization: 'Bearer ' + user.accessToken } });
+        { headers: { authorization: 'Bearer ' + user!.accessToken } });
 
-      console.log(res.data);
-      setPosts(prev => [res.data, ...prev]);
+      setPosts((prev: PostType[]) => [res.data, ...prev]);
       setFile(null);
-      desc.current.value = '';
+      desc.current!.value = '';
     }
     catch (err) {
       console.log(err);
@@ -63,7 +73,7 @@ export default function Share({ setPosts }) {
       <div className="shareWrapper">
         <div className="shareTop">
           <img className="shareProfileImg" 
-            src={user.profilePicture 
+            src={user?.profilePicture 
               ? `${basename}${user.profilePicture}`
               : `${basename}/assets/person/noAvatar.png`} />
           <input ref={desc} 
@@ -88,7 +98,7 @@ export default function Share({ setPosts }) {
               <PermMedia htmlColor="tomato" className="shareIcon" />
               <span className="shareOptionText">Photo</span>
               <input style={{display:"none"}} type="file" id="file" name="file" accept="image/*" 
-                onChange={(e) => setFile(e.target.files[0])} />
+                onChange={(e) => setFile(e.target.files ? e.target.files[0] : null)} />
             </label>
             
             <div className="shareOption na">

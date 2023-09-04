@@ -8,25 +8,25 @@ import Sidebar from '../../components/sidebar/Sidebar';
 
 export default function Register() {
 
-  const username = useRef();
-  const email = useRef();
-  const password = useRef(); 
-  const passwordAgain = useRef(); 
-  const { dispatch } = useContext(AuthContext);
+  const username      = useRef<HTMLInputElement>(null);
+  const email         = useRef<HTMLInputElement>(null);
+  const password      = useRef<HTMLInputElement>(null); 
+  const passwordAgain = useRef<HTMLInputElement>(null); 
+  const { dispatch }  = useContext(AuthContext);
 
-  const handleClick = async (e) => {
+  const handleClick = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (passwordAgain.current.value !== password.current.value) {
-      passwordAgain.current.setCustomValidity("Passwords don't match");
+    if (passwordAgain.current!.value !== password.current!.value) {
+      passwordAgain.current!.setCustomValidity("Passwords don't match");
     }
     else {
       const userCredentials = {
-        username: username.current.value,
-        password: password.current.value,
-        email: email.current.value,
+        username: username.current!.value,
+        password: password.current!.value,
+        email: email.current!.value,
       };
 
-      await registerCall(userCredentials, dispatch);
+      dispatch && await registerCall(userCredentials, dispatch);
     }
   }
 
